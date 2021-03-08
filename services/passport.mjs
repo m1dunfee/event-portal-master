@@ -21,7 +21,8 @@ passport.use(
     new GoogleStrategy({
         clientID: process.env.googleClientID,
         clientSecret: process.env.googleClientSecret,
-        callbackURL: '/auth/google/callback'
+        callbackURL: '/auth/google/callback', //using https://event-portal-master.herokuapp.com/auth/google/callback/ would bypass the need for another attribute
+        proxy: true
     }, (accessToken, refreshToken, profile, done) => {
 
         User.findOne({ googleID: profile.id }).then((record) => {
