@@ -8,7 +8,7 @@ export default (app) => {
         res.sendStatus(200);
     });
 
-    app.get('/api/current_user', (req, res) => {
+    app.get('/auth/current_user', (req, res) => {
         res.send(req.user)
     });
 
