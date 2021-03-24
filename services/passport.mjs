@@ -5,13 +5,13 @@ import mongoose from 'mongoose';
 //keeps mongoose from thinking there is multiple models with the same name
 const User = mongoose.model('users')
 
-passport.serializeUser((user, done)=>{
+passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done)=>{
+passport.deserializeUser((id, done) => {
     User.findById(id)
-        .then(user =>{
+        .then(user => {
             done(null, user);
         })
 });
@@ -23,18 +23,12 @@ passport.use(
         clientSecret: process.env.googleClientSecret,
         callbackURL: '/auth/google/callback', //using https://event-portal-master.herokuapp.com/auth/google/callback/ would bypass the need for another attribute
         proxy: true
-    }, (accessToken, refreshToken, profile, done) => {
+    }, async (accessToken, refreshToken, profile, done) => {
 
-        User.findOne({ googleID: profile.id }).then((record) => {
-            if (record) {
-                done(null, record);
-            } else {
-                new User({ googleID: profile.id })
-                    .save()
-                    .then(user => {
-                        done(null, user)
-                    });
-            }
-        });
+        const existingUser = await User.findOne({ googleID: profile.id });
+        existingUser ?
+            done(null, existingUser)
+            :
+            done(null, user = await new User({ googleID: profile.id }).save())
     })
 );
