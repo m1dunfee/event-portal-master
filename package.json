@@ -18,6 +18,7 @@
   "author": "Matthew Dunfee",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "concurrently": "^6.0.0",
     "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",

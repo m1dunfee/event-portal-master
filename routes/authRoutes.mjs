@@ -5,11 +5,11 @@ export default (app) => {
 //all
     app.get('/auth/logout', (req, res) => {
         req.logout();
-        res.sendStatus(200);
+        res.redirect('/');
     });
 
     app.get('/auth/current_user', (req, res) => {
-        res.send(req.user)
+        req.user ? res.send(req.user) : res.sendStatus(204);
     });
 
 
@@ -19,7 +19,9 @@ export default (app) => {
         })
     );
 
-    app.get('/auth/google/callback', passport.authenticate('google'));
+    app.get('/auth/google/callback', passport.authenticate('google'), (req, res) => {
+        res.redirect('/');
+    });
 
 
 //facebook
